@@ -1,0 +1,9 @@
+{
+  "cssTheme": "Noctilux",
+  "theme": "obsidian",
+  "accentColor": "#7299f3",
+  "nativeMenus": false,
+  "enabledCssSnippets": [
+    "theme-override"
+  ]
+}

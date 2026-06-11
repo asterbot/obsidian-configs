@@ -1,0 +1,9 @@
+{
+  "remoteURL": "https://github.com/asterbot/4A-Notes",
+  "gitLocation": "",
+  "syncinterval": 0,
+  "isSyncOnLoad": false,
+  "checkStatusOnLoad": true,
+  "noticeLevel": "ALL",
+  "showSyncSuccessNotice": true
+}

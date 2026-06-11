@@ -1,0 +1,17 @@
+{
+  "showLineNumber": true,
+  "vimMode": true,
+  "readableLineLength": false,
+  "foldHeading": true,
+  "useMarkdownLinks": true,
+  "showUnsupportedFiles": false,
+  "attachmentFolderPath": "./images",
+  "pdfExportSettings": {
+    "pageSize": "A5",
+    "landscape": false,
+    "margin": "2",
+    "downscalePercent": 41
+  },
+  "alwaysUpdateLinks": true,
+  "newLinkFormat": "relative"
+}
