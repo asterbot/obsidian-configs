@@ -1,0 +1,782 @@
+.verovio-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+}
+
+.verovio-container svg {
+    max-width: 100%;
+    height: auto;
+}
+
+.verovio-toolbar {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: none;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid #cccccc;
+    padding: 5px;
+    border-radius: 3px;
+    z-index: 10;
+}
+
+.verovio-container:hover .verovio-toolbar {
+    display: flex;
+    gap: 5px;
+}
+
+.verovio-toolbar button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.verovio-toolbar button:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+
+.verovio-toolbar button svg {
+    width: 24px;
+    height: 24px;
+}
+
+:root {
+  --verovio-play-color: #DC143C;
+  --verovio-selection-color: #0066FF;
+}
+.playing { fill: var(--verovio-play-color); }
+.verovio-selected,
+.verovio-selected * {
+  fill: var(--verovio-selection-color) !important;
+  stroke: var(--verovio-selection-color) !important;
+}
+
+.verovio-svg-wrapper g.note[id],
+.verovio-svg-wrapper g.chord[id],
+.verovio-svg-wrapper g.rest[id],
+.verovio-svg-wrapper g.mRest[id],
+.verovio-svg-wrapper g.multiRest[id] {
+  cursor: pointer;
+}
+
+.verovio-drag-selection-rect {
+  pointer-events: none;
+  shape-rendering: geometricPrecision;
+}
+
+/* Dark-mode: follow Obsidian's active theme automatically */
+.theme-dark .verovio-svg-wrapper {
+  filter: invert(1) hue-rotate(180deg) saturate(0.9);
+}
+
+/* Elements that should keep original color (apply .no-invert to them after render) */
+.theme-dark .verovio-svg-wrapper .no-invert {
+  filter: invert(1);
+}
+
+/* Toolbar dark style */
+.theme-dark .verovio-container:hover .verovio-toolbar {
+  display: flex;
+  gap: 5px;
+  background: rgba(20, 20, 20, 0.95);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.theme-dark .verovio-container:hover .verovio-toolbar button svg,
+.theme-dark .verovio-container .verovio-toolbar button:hover svg,
+.theme-dark .verovio-container .verovio-toolbar button:focus-visible svg {
+  filter: none;
+  width: 24px;
+  height: 24px;
+}
+
+/* Keep icons black in dark toolbar for visibility */
+.theme-dark .verovio-container .verovio-toolbar button svg path,
+.theme-dark .verovio-container .verovio-toolbar button svg line,
+.theme-dark .verovio-container .verovio-toolbar button svg circle,
+.theme-dark .verovio-container .verovio-toolbar button svg rect {
+  stroke: #ffffff;
+  opacity: 1;
+}
+
+.verovio-music-editor-content {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.verovio-editor-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px;
+  border-bottom: 1px solid var(--background-modifier-border);
+  background: var(--background-primary);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.verovio-editor-tab-button {
+  width: 32px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 6px;
+}
+
+.verovio-editor-tab-button svg {
+  width: 18px;
+  height: 18px;
+}
+
+.verovio-editor-tab-text-icon {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.verovio-editor-tab-button.is-active {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
+
+.verovio-editor-tab-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.verovio-editor-tab-body {
+  flex: 1;
+  min-height: 0;
+}
+
+.verovio-editor-tab-pane {
+  display: none;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  padding: 8px;
+}
+
+.verovio-editor-tab-pane.is-active {
+  display: flex;
+}
+
+.verovio-editor-section {
+  margin-bottom: 1rem;
+}
+
+.verovio-editor-section h2,
+.verovio-editor-tab-pane h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.verovio-editor-separator {
+  margin: 1rem 0;
+  border-top: 3px solid var(--interactive-accent);
+}
+
+.verovio-editor-wrapper {
+  flex: 1;
+  min-height: 240px;
+}
+
+.verovio-editor-wrapper .cm-editor {
+  height: 100%;
+}
+
+.verovio-editor-wrapper .verovio-editor-marked-xml-line {
+  background: color-mix(in srgb, var(--interactive-accent) 18%, transparent);
+  outline: 1px solid color-mix(in srgb, var(--interactive-accent) 38%, transparent);
+}
+
+.verovio-editor-placeholder {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.verovio-editor-selection-status {
+  margin: 0 0 10px;
+  color: var(--text-muted);
+  font-size: var(--font-ui-small);
+}
+
+.verovio-editor-command-section {
+  margin-bottom: 14px;
+}
+
+.verovio-editor-command-section h3 {
+  margin: 0 0 6px;
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.verovio-editor-command-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+}
+
+.verovio-editor-command-button {
+  justify-content: flex-start;
+  width: 100%;
+  height: auto;
+  min-height: 30px;
+  padding: 5px 8px;
+  text-align: left;
+  font-size: var(--font-ui-small);
+}
+
+.verovio-rendering-settings-controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.verovio-rendering-settings-controls input[type="search"] {
+  flex: 1 1 160px;
+  min-width: 0;
+}
+
+.verovio-rendering-settings-group {
+  border-top: 1px solid var(--background-modifier-border);
+  padding: 6px 0;
+}
+
+.verovio-rendering-settings-group summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--text-normal);
+}
+
+.verovio-rendering-option-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(96px, 34%);
+  align-items: center;
+  gap: 8px;
+  min-height: 28px;
+  padding: 3px 0;
+  font-size: var(--font-ui-small);
+}
+
+.verovio-rendering-option-item:nth-child(even) {
+  background: color-mix(in srgb, var(--background-modifier-hover) 55%, transparent);
+}
+
+.verovio-rendering-option-item label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.verovio-rendering-option-item input,
+.verovio-rendering-option-item select {
+  width: 100%;
+  min-width: 0;
+  height: 24px;
+  font-size: var(--font-ui-smaller);
+}
+
+.verovio-rendering-option-item-slider {
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 46%);
+}
+
+.verovio-rendering-linked-control {
+  display: grid;
+  grid-template-columns: 68px minmax(0, 1fr) 24px;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.verovio-rendering-linked-control input[type="number"] {
+  width: 68px;
+}
+
+.verovio-rendering-linked-control input[type="range"] {
+  width: 100%;
+  min-width: 0;
+}
+
+.verovio-rendering-default-button {
+  width: 24px;
+  height: 24px;
+  padding: 3px;
+  color: var(--text-muted);
+}
+
+.verovio-rendering-default-button:hover {
+  color: var(--text-normal);
+}
+
+.verovio-plugin-color-option {
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 46%);
+}
+
+.verovio-plugin-color-control {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.verovio-rendering-option-item .verovio-plugin-color-control input[type="color"] {
+  width: 36px;
+  min-width: 36px;
+  padding: 2px;
+}
+
+.verovio-rendering-option-item .verovio-plugin-color-control input[type="text"] {
+  width: 100%;
+}
+
+.verovio-rendering-option-checkbox-wrap {
+  justify-self: end;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  min-width: 28px;
+  height: 24px;
+  margin: 0 6px 0 0;
+  overflow: visible;
+  cursor: pointer;
+}
+
+.verovio-rendering-option-item input.verovio-rendering-option-checkbox {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.verovio-rendering-option-checkbox-box {
+  position: relative;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--text-muted);
+  border-radius: 2px;
+  background: var(--background-primary);
+}
+
+.verovio-rendering-option-checkbox:checked + .verovio-rendering-option-checkbox-box {
+  border-color: var(--interactive-accent);
+  background: var(--background-primary);
+}
+
+.verovio-rendering-option-checkbox:checked + .verovio-rendering-option-checkbox-box::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 5px;
+  height: 9px;
+  border: solid var(--interactive-accent);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.verovio-rendering-option-checkbox:focus-visible + .verovio-rendering-option-checkbox-box {
+  outline: 2px solid color-mix(in srgb, var(--interactive-accent) 45%, transparent);
+  outline-offset: 2px;
+}
+
+.verovio-mei-menu-dropdown {
+  position: absolute;
+  z-index: 20;
+  width: min(320px, calc(100% - 12px));
+  max-height: min(72vh, 680px);
+  overflow-y: auto;
+  padding: 4px 0;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--background-secondary) 92%, transparent);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(2px);
+}
+
+.verovio-mei-menu-separator {
+  height: 1px;
+  margin: 4px 10px;
+  background: var(--background-modifier-border);
+}
+
+.verovio-mei-menu-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 24px;
+  margin: 0;
+  padding: 2px 10px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-normal);
+  font-size: var(--font-ui-small);
+  text-align: left;
+  box-shadow: none;
+}
+
+.verovio-mei-menu-item:hover,
+.verovio-mei-menu-item:focus-visible {
+  background: var(--background-modifier-hover);
+}
+
+.verovio-mei-menu-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.verovio-mei-menu-shortcut {
+  color: var(--text-accent);
+  border: 1px solid var(--text-accent);
+  border-radius: 3px;
+  padding: 0 4px;
+  font-size: var(--font-ui-smaller);
+  line-height: 1.35;
+  white-space: nowrap;
+}
+
+.verovio-editor-wrapper .cm-panels {
+  background: var(--background-primary);
+  border-color: var(--background-modifier-border);
+  color: var(--text-normal);
+  font-family: var(--font-interface);
+}
+
+.verovio-editor-wrapper .cm-search {
+  display: flex;
+  align-items: center;
+  gap: 6px 8px;
+  padding: 8px;
+  flex-wrap: wrap;
+}
+
+.verovio-editor-wrapper .cm-search input {
+  height: 28px;
+  min-width: 140px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  background: var(--background-secondary);
+  color: var(--text-normal);
+  padding: 0 8px;
+  font-family: var(--font-interface);
+  font-size: var(--font-ui-small);
+}
+
+.verovio-editor-wrapper .cm-search input[name="search"],
+.verovio-editor-wrapper .cm-search input[name="replace"] {
+  flex: 1 1 170px;
+}
+
+.verovio-editor-wrapper .cm-search input:focus {
+  border-color: var(--interactive-accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--interactive-accent) 22%, transparent);
+  outline: none;
+}
+
+.verovio-editor-wrapper .cm-search button {
+  height: 28px;
+  border-radius: 6px;
+  padding: 0 10px;
+  background: var(--interactive-normal);
+  color: var(--text-normal);
+  border: 1px solid var(--background-modifier-border);
+  font-family: var(--font-interface);
+  font-size: var(--font-ui-smaller);
+  text-transform: capitalize;
+}
+
+.verovio-editor-wrapper .cm-search button:hover,
+.verovio-editor-wrapper .cm-search button:focus-visible {
+  background: var(--interactive-hover);
+}
+
+.verovio-editor-wrapper .cm-search button[name="close"] {
+  display: none;
+}
+
+.verovio-editor-wrapper .cm-search label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 9px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 999px;
+  background: var(--background-secondary);
+  color: var(--text-normal);
+  cursor: pointer;
+  user-select: none;
+  font-size: var(--font-ui-smaller);
+}
+
+.verovio-editor-wrapper .cm-search label input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.verovio-editor-wrapper .cm-search label::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--text-faint);
+  border-radius: 50%;
+  background: var(--background-primary);
+}
+
+.verovio-editor-wrapper .cm-search label:has(input:checked) {
+  border-color: var(--interactive-accent);
+  background: color-mix(in srgb, var(--interactive-accent) 16%, var(--background-secondary));
+  color: var(--text-normal);
+}
+
+.verovio-editor-wrapper .cm-search label:has(input:checked)::before {
+  border-color: var(--interactive-accent);
+  background: var(--interactive-accent);
+  box-shadow: inset 0 0 0 2px var(--background-secondary);
+}
+
+.verovio-editor-wrapper .cm-search br {
+  flex-basis: 100%;
+  width: 0;
+  height: 0;
+}
+
+.verovio-pae-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 760px;
+}
+
+.verovio-pae-modal h2 {
+  margin: 0 0 4px;
+}
+
+.verovio-pae-toolbar,
+.verovio-pae-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.verovio-pae-button-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.verovio-pae-toolbar button {
+  min-width: 32px;
+  height: 30px;
+  padding: 0 7px;
+  font-size: var(--font-ui-smaller);
+}
+
+.verovio-pae-duration-button {
+  line-height: 1;
+}
+
+.verovio-pae-toolbar button.is-active {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
+
+.verovio-pae-toolbar button svg {
+  display: block;
+  width: 18px;
+  height: 20px;
+}
+
+.verovio-pae-toolbar button .svg-icon,
+.verovio-pae-toolbar button .svg-icon * {
+  fill: none;
+  stroke: currentColor;
+}
+
+.verovio-pae-toolbar button .verovio-pae-vrv-icon,
+.verovio-pae-toolbar button .verovio-pae-vrv-icon * {
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+.verovio-pae-rest-button {
+  min-width: 36px;
+}
+
+.verovio-pae-rest-button svg {
+  width: 16px;
+  height: 22px;
+}
+
+.verovio-pae-dot-button,
+.verovio-pae-barline-button {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.verovio-pae-barline-button {
+  font-size: 20px;
+}
+
+.verovio-pae-keyboard-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 2px;
+}
+
+.verovio-pae-piano {
+  position: relative;
+  width: 525px;
+  height: 155px;
+  margin: 0 auto;
+  background: linear-gradient(#fbfbfb, #e9e9e9);
+  border: 1px solid #9a9a9a;
+  box-shadow: inset 0 -8px 14px rgba(0, 0, 0, 0.12);
+}
+
+.verovio-pae-white-divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: #a8a8a8;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.verovio-pae-white-key,
+.verovio-pae-black-key {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.verovio-pae-white-key {
+  z-index: 2;
+  border: 0;
+  border-right: 1px solid #b9b9b9;
+  background: transparent;
+  color: #222222;
+}
+
+.verovio-pae-white-key:hover,
+.verovio-pae-white-key:focus-visible {
+  background: rgba(40, 110, 210, 0.12);
+}
+
+.verovio-pae-white-key span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  text-align: center;
+  font-size: 11px;
+}
+
+.verovio-pae-black-key {
+  z-index: 4;
+  border: 1px solid #111111;
+  background: linear-gradient(#3a3a3a, #080808);
+}
+
+.verovio-pae-black-key.is-flat {
+  background: linear-gradient(#161616, #404040);
+}
+
+.verovio-pae-black-key:hover,
+.verovio-pae-black-key:focus-visible {
+  border-color: var(--interactive-accent);
+  box-shadow: 0 0 0 2px var(--interactive-accent);
+}
+
+.verovio-pae-black-key::after {
+  content: "#";
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 10px;
+}
+
+.verovio-pae-black-key.is-flat::after {
+  content: "b";
+}
+
+.verovio-pae-field {
+  width: 100%;
+  min-height: 32px;
+}
+
+.verovio-pae-input {
+  width: 100%;
+  min-height: 78px;
+  resize: vertical;
+  font-family: var(--font-monospace);
+}
+
+.verovio-pae-warning {
+  display: none;
+  white-space: pre-line;
+  color: var(--text-error);
+  background: var(--background-modifier-error);
+  border-radius: 6px;
+  padding: 8px;
+}
+
+.verovio-pae-preview {
+  min-height: 120px;
+  max-height: 280px;
+  overflow: auto;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  padding: 8px;
+  background: var(--background-primary);
+}
+
+.verovio-pae-preview svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.verovio-pae-actions {
+  justify-content: flex-end;
+}
+
+@media (max-width: 700px) {
+  .verovio-pae-piano {
+    margin: 0;
+  }
+}
